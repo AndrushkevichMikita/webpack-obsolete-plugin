@@ -1,0 +1,22 @@
+/**
+ * Queue a function to be called during a browser's idle periods.
+ */
+export default function requestIdleCallback(callback: IdleRequestCallback, options: IdleRequestOptions = {}) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, options);
+    return;
+  }
+
+  const start = new Date().getTime();
+
+  setTimeout(() => {
+    const elapsedTime = Date.now() - start;
+
+    callback({
+      didTimeout: false,
+      timeRemaining() {
+        return Math.max(0, 50 - elapsedTime);
+      },
+    });
+  }, 1);
+}

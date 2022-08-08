@@ -1,0 +1,20 @@
+{
+  // jsconfig.json === tsconfig.json with allowJs: true
+  "compilerOptions": {
+    //intellisense config for VSCode
+    "allowJs": true,
+    "outDir": "outDir",
+    "noEmit": true, //exlcude errors in console because it should be wrapped by webpack
+    "esModuleInterop": true,
+    "target": "ES5",
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "files": ["src/obsolete.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "build", ".vscode"]
+}
