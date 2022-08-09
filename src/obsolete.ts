@@ -37,7 +37,7 @@ export default class Obsolete {
 
   alert: Alert | null;
 
-  constructor(options: ObsoleteOptions) {
+  constructor(options?: ObsoleteOptions) {
     this.options = {
       ...Obsolete.defaultOptions,
       ...options,
@@ -49,7 +49,7 @@ export default class Obsolete {
   /**
    * Test browser compatibility.
    */
-  test(browsers: string[], doneCallBack: () => void | null) {
+  test(browsers: string[], doneCallBack?: () => void | null) {
     if (!browsers.length) {
       throw new Error("Parameter `browsers` is empty.");
     }
