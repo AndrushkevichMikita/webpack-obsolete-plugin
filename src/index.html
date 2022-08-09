@@ -14,14 +14,21 @@
     <script>
       console.clear();
     </script>
-   <script defer src="./run.js"></script>
   </head>
 
   <body>
-    <noscript>
-      <strong>
-        We're sorry but this doesn't work properly without JavaScript enabled. Please enable it to continue.
-      </strong>
-    </noscript>
+  <!-- 
+    <script src="node_modules/systemjs/dist/s.js"></script>
+    <script src="node_modules/systemjs/dist/extras/named-register.min.js"></script>
+  -->
+
+    <script src="https://unpkg.com/systemjs@6.11.0/dist/s.js"></script>
+    <script src="https://unpkg.com/systemjs@6.11.0/dist/extras/named-register.js"></script> 
+
+    <script src="build/bundle.js"></script>
+    <script type="module">
+      System.import('index');
+    </script>
+
   </body>
 </html>
