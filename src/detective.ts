@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { CompareResult, compareVersion } from "./comparator";
-
 interface Browser {
   name: string;
   version: string;
@@ -53,6 +50,53 @@ const browserMap = [
   },
 ];
 
+/*Return `CompareResult.GT` if greater than, return `CompareResult.EQ`
+if equal to, return `CompareResult.LT` if less than.
+*/
+ const enum CompareResult {
+ GT = 1,
+ EQ = 0,
+ LT = -1,
+}
+/**
+* Compare two semantic versions.
+*/
+ function compareVersion(version: string, comparedVersion: string) {
+ const rVersion = /\d+/g;
+ const rComparedVersion = /\d+/g;
+
+ // Validate if a string is semantic version.
+ [version, comparedVersion].forEach((v) => {
+   if (!/^(\d+)(\.\d+)*$/.test(v)) {
+     throw new Error(`Parameter \`version\` \`${v}\` isn't a semantic version.`);
+   }
+ });
+
+ // eslint-disable-next-line no-constant-condition
+ while (true) {
+   const matches = rVersion.exec(version);
+   const comparedMatches = rComparedVersion.exec(comparedVersion);
+
+   if (matches && !comparedMatches) {
+     return Number(matches[0]) === 0 ? CompareResult.EQ : CompareResult.GT;
+   }
+   if (!matches && comparedMatches) {
+     return Number(comparedMatches[0]) === 0 ? CompareResult.EQ : CompareResult.LT;
+   }
+   if (matches && comparedMatches) {
+     if (Number(matches[0]) > Number(comparedMatches[0])) {
+       return CompareResult.GT;
+     }
+     if (Number(matches[0]) < Number(comparedMatches[0])) {
+       return CompareResult.LT;
+     }
+   }
+   if (!matches && !comparedMatches) {
+     return CompareResult.EQ;
+   }
+ }
+}
+
 export default class Detective {
   /** Convert userAgent to a group of matched `Browser` instances */
   parse(userAgent: string): Array<Browser> {
@@ -68,7 +112,6 @@ export default class Detective {
       if (br.includes) {
         matches = br.includes.map((x) => x.exec(userAgent));
         if (matches.every((x) => x != null)) {
-          console.warn("includes", matches);
           const f = matches[0];
 
           if (f?.length)
@@ -84,7 +127,7 @@ export default class Detective {
   detect(userAgent: string, targetBrowsers: Array<string>): boolean {
     const currentBrowsers = this.parse(userAgent);
 
-    if (!currentBrowsers.length) return false;
+    if (!currentBrowsers.length) return true;
 
     // Normalize target browsers to a group of `Browser` instances.
     const rBrowser = /(\w+) (([\d.]+)(?:-[\d.]+)?)/;
@@ -126,7 +169,7 @@ export default class Detective {
 
     return normalizedTargetBrowsersOfTheSameName.some((t) =>
       currentBrowsers.some(
-        (c) => c.name === t.value.name && compareVersion(c.primaryVersion, t.value.primaryVersion) !== CompareResult.EQ
+        (c) => c.name === t.value.name && compareVersion(c.primaryVersion, t.value.primaryVersion) !== CompareResult.LT
       )
     );
   }

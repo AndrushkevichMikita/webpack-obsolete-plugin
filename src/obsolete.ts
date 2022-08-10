@@ -1,28 +1,8 @@
 import Detective from "./detective";
-import Alert from "./alert";
+import browserslist from "../node_modules/browserslist/index";
 
 interface ObsoleteOptions {
   template?: string; // The prompt html template. It accepts any document fragment.
-}
-
-function requestIdleCallback(callback: IdleRequestCallback, options: IdleRequestOptions = {}) {
-  if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(callback, options);
-    return;
-  }
-
-  const start = new Date().getTime();
-
-  setTimeout(() => {
-    const elapsedTime = Date.now() - start;
-
-    callback({
-      didTimeout: false,
-      timeRemaining() {
-        return Math.max(0, 50 - elapsedTime);
-      },
-    });
-  }, 1);
 }
 
 export default class Obsolete {
@@ -35,38 +15,40 @@ export default class Obsolete {
 
   detective: Detective;
 
-  alert: Alert | null;
-
   constructor(options?: ObsoleteOptions) {
     this.options = {
       ...Obsolete.defaultOptions,
       ...options,
     };
     this.detective = new Detective();
-    this.alert = null;
   }
 
   /**
    * Test browser compatibility.
    */
-  test(browsers: string[], doneCallBack?: () => void | null) {
+  test(browsers: string[]) {
     if (!browsers.length) {
       throw new Error("Parameter `browsers` is empty.");
     }
 
     const passed = this.detective.detect(navigator.userAgent, browsers);
     if (!passed) {
-      requestIdleCallback(() => {
-        if (this.alert) {
-          this.alert.handleClose();
-        } else {
-          this.alert = new Alert();
-        }
-        this.alert.prompt(this.options.template);
-        doneCallBack && doneCallBack();
-      });
+      const el = document.createElement("div");
+      el.onclick = function click() {
+        el.remove();
+      };
+      el.style.color = "#fff";
+      el.style.background = "red";
+      el.style.position = "fixed";
+      el.style.width = "100vw";
+      el.style.padding = "4px";
+      el.textContent = "Your browser is not supported, supported browsers here";
+      
+      document.body.appendChild(el);
       return false;
     }
     return true;
   }
 }
+
+// new Obsolete().test(browserslist());
