@@ -1,4 +1,4 @@
-function getBasicBrowsers(excludes:Array<string> = []) {
+function getBasicBrowsers(excludes: Array<string> = []) {
   const basicBrowsers = [
     'ie 5.5',
     'edge 12',
@@ -8,21 +8,22 @@ function getBasicBrowsers(excludes:Array<string> = []) {
     'opera 9',
     'android 2.1',
     'ios_saf 3.2',
-    'and_chr 30',
+    'and_chr 30'
   ];
 
   return basicBrowsers.filter(
-    basicBrowser => !excludes.every(exclude => basicBrowser.includes(exclude))
+    (basicBrowser) =>
+      !excludes.every((exclude) => basicBrowser.includes(exclude))
   );
 }
 
-function setUserAgent(useragent:string) {
+function setUserAgent(useragent: string) {
   Object.defineProperty(navigator, 'userAgent', {
     value: useragent,
-    configurable: true,
+    configurable: true
   });
 }
-function unescape(html:string) {
+function unescape(html: string) {
   return html.replace('&times;', '×');
 }
 

@@ -6,7 +6,7 @@ describe('method-test', () => {
   let obsolete: Obsolete;
 
   beforeEach(() => {
-    document.body.innerHTML = "";
+    document.body.innerHTML = '';
     setUserAgent(originalUserAgent);
     obsolete = new Obsolete({});
   });
@@ -16,7 +16,7 @@ describe('method-test', () => {
       expect(obsolete.test(['ie 5.5'])).toBe(true);
       expect(obsolete.test(['ie 6'])).toBe(true);
       expect(obsolete.test(['ie 7'])).toBe(false);
-      getBasicBrowsers(['ie']).forEach(item => {
+      getBasicBrowsers(['ie']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -27,7 +27,7 @@ describe('method-test', () => {
       expect(obsolete.test(['ie 9'])).toBe(true);
       expect(obsolete.test(['ie 10'])).toBe(true);
       expect(obsolete.test(['ie 11'])).toBe(false);
-      getBasicBrowsers(['ie']).forEach(item => {
+      getBasicBrowsers(['ie']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -38,7 +38,7 @@ describe('method-test', () => {
       expect(obsolete.test(['edge 15'])).toBe(true);
       expect(obsolete.test(['edge 16'])).toBe(true);
       expect(obsolete.test(['edge 17'])).toBe(false);
-      getBasicBrowsers(['edge']).forEach(item => {
+      getBasicBrowsers(['edge']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -49,7 +49,7 @@ describe('method-test', () => {
       expect(obsolete.test(['chrome 59'])).toBe(true);
       expect(obsolete.test(['chrome 60'])).toBe(true);
       expect(obsolete.test(['chrome 61'])).toBe(false);
-      getBasicBrowsers(['chrome']).forEach(item => {
+      getBasicBrowsers(['chrome']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -61,7 +61,7 @@ describe('method-test', () => {
       expect(obsolete.test(['safari 11.1'])).toBe(true);
       expect(obsolete.test(['safari 12'])).toBe(false);
       expect(obsolete.test(['safari TP'])).toBe(false);
-      getBasicBrowsers(['safari']).forEach(item => {
+      getBasicBrowsers(['safari']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -72,7 +72,7 @@ describe('method-test', () => {
       expect(obsolete.test(['firefox 59'])).toBe(true);
       expect(obsolete.test(['firefox 60'])).toBe(true);
       expect(obsolete.test(['firefox 61'])).toBe(false);
-      getBasicBrowsers(['firefox']).forEach(item => {
+      getBasicBrowsers(['firefox']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -81,7 +81,7 @@ describe('method-test', () => {
       expect(obsolete.test(['opera 9'])).toBe(true);
       expect(obsolete.test(['opera 9.5-9.6'])).toBe(true);
       expect(obsolete.test(['opera 10.0-10.1'])).toBe(false);
-      getBasicBrowsers(['epera']).forEach(item => {
+      getBasicBrowsers(['epera']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
       setUserAgent(
@@ -90,7 +90,7 @@ describe('method-test', () => {
       expect(obsolete.test(['opera 11.1'])).toBe(true);
       expect(obsolete.test(['opera 11.5'])).toBe(true);
       expect(obsolete.test(['opera 11.6'])).toBe(false);
-      getBasicBrowsers(['opera']).forEach(item => {
+      getBasicBrowsers(['opera']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -101,7 +101,7 @@ describe('method-test', () => {
       expect(obsolete.test(['opera 55'])).toBe(true);
       expect(obsolete.test(['opera 56'])).toBe(true);
       expect(obsolete.test(['opera 57'])).toBe(false);
-      getBasicBrowsers(['opera']).forEach(item => {
+      getBasicBrowsers(['opera']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -112,7 +112,7 @@ describe('method-test', () => {
       expect(obsolete.test(['android 42'])).toBe(true);
       expect(obsolete.test(['android 43'])).toBe(true);
       expect(obsolete.test(['android 44'])).toBe(false);
-      getBasicBrowsers(['android']).forEach(item => {
+      getBasicBrowsers(['android']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -123,7 +123,7 @@ describe('method-test', () => {
       expect(obsolete.test(['ios_saf 10.3'])).toBe(true);
       expect(obsolete.test(['ios_saf 11.0-11.2'])).toBe(true);
       expect(obsolete.test(['ios_saf 11.3-11.4'])).toBe(false);
-      getBasicBrowsers(['ios_saf']).forEach(item => {
+      getBasicBrowsers(['ios_saf']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
       setUserAgent(
@@ -132,7 +132,7 @@ describe('method-test', () => {
       expect(obsolete.test(['ios_saf 7.0-7.1'])).toBe(true);
       expect(obsolete.test(['ios_saf 8'])).toBe(true);
       expect(obsolete.test(['ios_saf 8.1-8.4'])).toBe(false);
-      getBasicBrowsers(['ios_saf']).forEach(item => {
+      getBasicBrowsers(['ios_saf']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -143,7 +143,7 @@ describe('method-test', () => {
       expect(obsolete.test(['and_chr 62'])).toBe(true);
       expect(obsolete.test(['and_chr 63'])).toBe(true);
       expect(obsolete.test(['and_chr 64'])).toBe(false);
-      getBasicBrowsers(['and_chr']).forEach(item => {
+      getBasicBrowsers(['and_chr']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -156,7 +156,7 @@ describe('method-test', () => {
       expect(obsolete.test(['chrome 64'])).toBe(true);
       expect(obsolete.test(['chrome 65'])).toBe(true);
       expect(obsolete.test(['chrome 66'])).toBe(false);
-      getBasicBrowsers(['chrome']).forEach(item => {
+      getBasicBrowsers(['chrome']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -167,7 +167,7 @@ describe('method-test', () => {
       expect(obsolete.test(['chrome 62'])).toBe(true);
       expect(obsolete.test(['chrome 63'])).toBe(true);
       expect(obsolete.test(['chrome 64'])).toBe(false);
-      getBasicBrowsers(['chrome']).forEach(item => {
+      getBasicBrowsers(['chrome']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -178,7 +178,7 @@ describe('method-test', () => {
       expect(obsolete.test(['chrome 44'])).toBe(true);
       expect(obsolete.test(['chrome 45'])).toBe(true);
       expect(obsolete.test(['chrome 46'])).toBe(false);
-      getBasicBrowsers(['chrome']).forEach(item => {
+      getBasicBrowsers(['chrome']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -189,7 +189,7 @@ describe('method-test', () => {
       expect(obsolete.test(['chrome 42'])).toBe(true);
       expect(obsolete.test(['chrome 43'])).toBe(true);
       expect(obsolete.test(['chrome 44'])).toBe(false);
-      getBasicBrowsers(['chrome']).forEach(item => {
+      getBasicBrowsers(['chrome']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -200,7 +200,7 @@ describe('method-test', () => {
       expect(obsolete.test(['firefox 37'])).toBe(true);
       expect(obsolete.test(['firefox 38'])).toBe(true);
       expect(obsolete.test(['firefox 39'])).toBe(false);
-      getBasicBrowsers(['firefox']).forEach(item => {
+      getBasicBrowsers(['firefox']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -211,7 +211,7 @@ describe('method-test', () => {
       expect(obsolete.test(['android 61'])).toBe(true);
       expect(obsolete.test(['android 62'])).toBe(true);
       expect(obsolete.test(['android 63'])).toBe(false);
-      getBasicBrowsers(['android']).forEach(item => {
+      getBasicBrowsers(['android']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -222,7 +222,7 @@ describe('method-test', () => {
       expect(obsolete.test(['android 56'])).toBe(true);
       expect(obsolete.test(['android 57'])).toBe(true);
       expect(obsolete.test(['android 58'])).toBe(false);
-      getBasicBrowsers(['android']).forEach(item => {
+      getBasicBrowsers(['android']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -233,7 +233,7 @@ describe('method-test', () => {
       expect(obsolete.test(['and_chr 56'])).toBe(true);
       expect(obsolete.test(['and_chr 57'])).toBe(true);
       expect(obsolete.test(['and_chr 58'])).toBe(false);
-      getBasicBrowsers(['and_chr']).forEach(item => {
+      getBasicBrowsers(['and_chr']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -244,7 +244,7 @@ describe('method-test', () => {
       expect(obsolete.test(['and_chr 56'])).toBe(true);
       expect(obsolete.test(['and_chr 57'])).toBe(true);
       expect(obsolete.test(['and_chr 58'])).toBe(false);
-      getBasicBrowsers(['and_chr']).forEach(item => {
+      getBasicBrowsers(['and_chr']).forEach((item) => {
         expect(obsolete.test([item])).toBe(true);
       });
     });
@@ -293,7 +293,7 @@ describe('method-test', () => {
       setUserAgent(
         'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0'
       );
-      getBasicBrowsers().forEach(item => {
+      getBasicBrowsers().forEach((item) => {
         expect(obsolete.test([item])).toBe(false);
       });
     });
@@ -301,7 +301,7 @@ describe('method-test', () => {
       setUserAgent(
         'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
       );
-      getBasicBrowsers().forEach(item => {
+      getBasicBrowsers().forEach((item) => {
         expect(obsolete.test([item])).toBe(false);
       });
     });
@@ -320,11 +320,11 @@ describe('method-test', () => {
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3538.77 Safari/537.36'
       );
       obsolete = new Obsolete({
-        template: html,
+        template: html
       });
       expect(obsolete.test(['chrome 60'])).toBe(true);
-      expect(document.body.innerHTML).toBe("");
-      expect(obsolete.test(['chrome 61'])).toBe(false)
+      expect(document.body.innerHTML).toBe('');
+      expect(obsolete.test(['chrome 61'])).toBe(false);
       expect(document.body.innerHTML.includes(html)).toBe(true);
     });
   });
@@ -333,13 +333,45 @@ describe('method-test', () => {
       setUserAgent(
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
       );
-      expect(obsolete.test([
-      'chrome 103','chrome 102','chrome 101','chrome 100','chrome 99','chrome 98','chrome 97','chrome 96','chrome 95','chrome 94',
-      'edge 103','edge 102',
-      'firefox 102','firefox 101',
-      'ios_saf 15.5','ios_saf 15.4','ios_saf 15.2-15.3','ios_saf 15.0-15.1','ios_saf 14.5-14.8','ios_saf 14.0-14.4','ios_saf 13.4-13.7','ios_saf 13.3','ios_saf 13.2','ios_saf 13.0-13.1',
-      'opera 86','opera 85',
-      'safari 15.5','safari 15.4','safari 15.2-15.3','safari 15.1','safari 15','safari 14.1','safari 14','safari 13.1','safari 13'])).toBe(true);
+      expect(
+        obsolete.test([
+          'chrome 103',
+          'chrome 102',
+          'chrome 101',
+          'chrome 100',
+          'chrome 99',
+          'chrome 98',
+          'chrome 97',
+          'chrome 96',
+          'chrome 95',
+          'chrome 94',
+          'edge 103',
+          'edge 102',
+          'firefox 102',
+          'firefox 101',
+          'ios_saf 15.5',
+          'ios_saf 15.4',
+          'ios_saf 15.2-15.3',
+          'ios_saf 15.0-15.1',
+          'ios_saf 14.5-14.8',
+          'ios_saf 14.0-14.4',
+          'ios_saf 13.4-13.7',
+          'ios_saf 13.3',
+          'ios_saf 13.2',
+          'ios_saf 13.0-13.1',
+          'opera 86',
+          'opera 85',
+          'safari 15.5',
+          'safari 15.4',
+          'safari 15.2-15.3',
+          'safari 15.1',
+          'safari 15',
+          'safari 14.1',
+          'safari 14',
+          'safari 13.1',
+          'safari 13'
+        ])
+      ).toBe(true);
     });
   });
 });
