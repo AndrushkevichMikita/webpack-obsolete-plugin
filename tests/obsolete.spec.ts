@@ -6,7 +6,7 @@ describe('method-test', () => {
   let obsolete: Obsolete;
 
   beforeEach(() => {
-    document.body.innerHTML = '';
+    document.body.innerHTML = "";
     setUserAgent(originalUserAgent);
     obsolete = new Obsolete({});
   });
@@ -311,6 +311,35 @@ describe('method-test', () => {
       expect(() => {
         obsolete.test([]);
       }).toThrow();
+    });
+  });
+  describe('template', () => {
+    const html = '<div>Sorry.</div>';
+    it('should insert custom template', () => {
+      setUserAgent(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3538.77 Safari/537.36'
+      );
+      obsolete = new Obsolete({
+        template: html,
+      });
+      expect(obsolete.test(['chrome 60'])).toBe(true);
+      expect(document.body.innerHTML).toBe("");
+      expect(obsolete.test(['chrome 61'])).toBe(false)
+      expect(document.body.innerHTML.includes(html)).toBe(true);
+    });
+  });
+  describe('browserlist template', () => {
+    it('should pass chrome', () => {
+      setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
+      );
+      expect(obsolete.test([
+      'chrome 103','chrome 102','chrome 101','chrome 100','chrome 99','chrome 98','chrome 97','chrome 96','chrome 95','chrome 94',
+      'edge 103','edge 102',
+      'firefox 102','firefox 101',
+      'ios_saf 15.5','ios_saf 15.4','ios_saf 15.2-15.3','ios_saf 15.0-15.1','ios_saf 14.5-14.8','ios_saf 14.0-14.4','ios_saf 13.4-13.7','ios_saf 13.3','ios_saf 13.2','ios_saf 13.0-13.1',
+      'opera 86','opera 85',
+      'safari 15.5','safari 15.4','safari 15.2-15.3','safari 15.1','safari 15','safari 14.1','safari 14','safari 13.1','safari 13'])).toBe(true);
     });
   });
 });
