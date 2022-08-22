@@ -1,4 +1,4 @@
-import Obsolete from '../src/obsolete';
+import Obsolete from '../srcJs/obsolete';
 import { getBasicBrowsers, setUserAgent } from './browser';
 
 describe('method-test', () => {
@@ -8,7 +8,7 @@ describe('method-test', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
     setUserAgent(originalUserAgent);
-    obsolete = new Obsolete();
+    obsolete = new Obsolete({});
   });
   describe('test self user agent', () => {
     it('should pass old IE', () => {
