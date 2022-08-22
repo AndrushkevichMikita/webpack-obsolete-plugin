@@ -1,4 +1,4 @@
-import Obsolete from '../srcJs/obsolete';
+import Obsolete from '../src/obsolete';
 import { getBasicBrowsers, setUserAgent } from './browser';
 
 describe('method-test', () => {

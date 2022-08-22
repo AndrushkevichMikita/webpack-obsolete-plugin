@@ -1,7 +1,17 @@
-interface Browser {
-  name: string;
-  version: string;
-  primaryVersion: string;
+interface Options{
+template?:  string,
+}
+
+interface Browser{
+  primaryVersion: string,
+  version: string,
+  name: string,
+}
+
+enum Compare{
+  GT = 1,
+  EQ = 0,
+  LT = -1
 }
 
 const browserMap = [
@@ -50,181 +60,181 @@ const browserMap = [
   },
 ];
 
-/*Return `CompareResult.GT` if greater than, return `CompareResult.EQ`
-if equal to, return `CompareResult.LT` if less than.
-*/
- const enum CompareResult {
- GT = 1,
- EQ = 0,
- LT = -1,
-}
-/**
-* Compare two semantic versions.
-*/
- function compareVersion(version: string, comparedVersion: string) {
- const rVersion = /\d+/g;
- const rComparedVersion = /\d+/g;
-
- // Validate if a string is semantic version.
- [version, comparedVersion].forEach((v) => {
-   if (!/^(\d+)(\.\d+)*$/.test(v)) {
-     throw new Error(`Parameter \`version\` \`${v}\` isn't a semantic version.`);
-   }
- });
-
- // eslint-disable-next-line no-constant-condition
- while (true) {
-   const matches = rVersion.exec(version);
-   const comparedMatches = rComparedVersion.exec(comparedVersion);
-
-   if (matches && !comparedMatches) {
-     return Number(matches[0]) === 0 ? CompareResult.EQ : CompareResult.GT;
-   }
-   if (!matches && comparedMatches) {
-     return Number(comparedMatches[0]) === 0 ? CompareResult.EQ : CompareResult.LT;
-   }
-   if (matches && comparedMatches) {
-     if (Number(matches[0]) > Number(comparedMatches[0])) {
-       return CompareResult.GT;
-     }
-     if (Number(matches[0]) < Number(comparedMatches[0])) {
-       return CompareResult.LT;
-     }
-   }
-   if (!matches && !comparedMatches) {
-     return CompareResult.EQ;
-   }
- }
-}
-
-  class Detective {
-  /** Convert userAgent to a group of matched `Browser` instances */
-  parse(userAgent: string): Array<Browser> {
-    const browsers: Array<Browser> = [];
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const br of browserMap) {
-      let matches;
-      if (br.excludes && br.excludes.some((x) => x.exec(userAgent))) {
-        return [];
-      }
-
-      if (br.includes) {
-        matches = br.includes.map((x) => x.exec(userAgent));
-        if (matches.every((x) => x != null)) {
-          const f = matches[0];
-
-          if (f?.length)
-            browsers.push({ name: br.name, version: f[1].replace(/_/g, "."), primaryVersion: f[2].replace(/_/g, ".") });
-          break;
-        }
-      }
-    }
-    return browsers;
-  }
-
-  /** Detect if the userAgent satisfies requirement of target browsers */
-  detect(userAgent: string, targetBrowsers: Array<string>): boolean {
-    const currentBrowsers = this.parse(userAgent);
-
-    if (!currentBrowsers.length) return true;
-
-    // Normalize target browsers to a group of `Browser` instances.
-    const rBrowser = /(\w+) (([\d.]+)(?:-[\d.]+)?)/;
-    const rawTargetBrowsers = targetBrowsers.map((browser) => {
-      // Normalize target browsers to a group of `Browser` instances.
-      const matches = rBrowser.exec(
-        {
-          "op_mini all": "op_mini 0",
-          "safari TP": "safari 99",
-        }[browser] || browser
-      );
-
-      // todo is null possible ?
-      return { name: matches![1], version: matches![2], primaryVersion: matches![3] };
-    });
-
-    const lowestVersionMap: Array<{ key: string; value: Browser }> = [];
-
-    rawTargetBrowsers.forEach((browser) => {
-      const exist = lowestVersionMap.find((x) => x.key === browser.name);
-      if (!exist) {
-        lowestVersionMap.push({ key: browser.name, value: browser });
-        return;
-      }
-
-      if (compareVersion(browser.primaryVersion, exist.value.primaryVersion) === CompareResult.LT) {
-        Object.assign(exist.value, browser);
-      }
-    });
-
-    const browsersNames = currentBrowsers.map((c) => c.name);
-    const normalizedTargetBrowsersOfTheSameName = lowestVersionMap.filter((targetBrowser) =>
-      browsersNames.includes(targetBrowser.value.name)
-    );
-
-    if (!normalizedTargetBrowsersOfTheSameName.length) {
-      return false;
-    }
-
-    return normalizedTargetBrowsersOfTheSameName.some((t) =>
-      currentBrowsers.some(
-        (c) => c.name === t.value.name && compareVersion(c.primaryVersion, t.value.primaryVersion) !== CompareResult.LT
-      )
-    );
-  }
-}
-
-
-interface ObsoleteOptions {
-  template?: string; // The prompt html template. It accepts any document fragment.
-}
-
-  export default  class Obsolete {
+class Obsolete {
   static defaultOptions = {
     template:
-      "<button id=\"obsoleteClose\" style='border:none;cursor:pointer;border-radius:unset;width:100%;text-align:center;color:white;background-color:red'>Your browser is not supported</button>",
+      '<div>Your browser is not supported.</div>',
+    position: 'afterbegin',
+    promptOnNonTargetBrowser: false,
+    promptOnUnknownBrowser: true,
   };
 
-  options: { template: string };
+  /**
+   * @param {Object} [options]
+   * @param {string} [options.template] The prompt html template. It accepts any document fragment.
+   */
 
-  detective: Detective;
-
-  constructor(options?: ObsoleteOptions) {
+  options: Options;
+  constructor(options : Options) {
     this.options = {
       ...Obsolete.defaultOptions,
       ...options,
     };
-    this.detective = new Detective();
   }
 
-  /**
-   * Test browser compatibility.
-   */
-  test(browsers: string[]) {
-    if (!browsers.length) {
-      throw new Error("Parameter `browsers` is empty.");
-    }
+   compareVersion(version :string, comparedVersion :string) {
+    const rVersion = /\d+/g;
+    const rComparedVersion = /\d+/g;
 
-    const passed = this.detective.detect(navigator.userAgent, browsers);
-    if (!passed) {
-      const el = document.createElement("div");
-      el.onclick = function click() {
-        el.remove();
-      };
-      el.style.color = "#fff";
-      el.style.background = "red";
-      el.style.position = "fixed";
-      el.style.width = "100vw";
-      el.style.padding = "4px";
-      el.textContent = "Your browser is not supported, supported browsers here";
-      
-      document.body.appendChild(el);
+    const rValidator = /^(\d+)(\.\d+)*$/;
+    [version, comparedVersion].forEach(v=>{
+      if (!rValidator.test(version)) {
+        throw new Error(
+          `Parameter \`version\` \`${version}\` isn't a semantic version.`
+        );
+      }
+    });
+  
+    while (true) {
+      const matches = rVersion.exec(version);
+      const comparedMatches = rComparedVersion.exec(comparedVersion);
+  
+      if (matches && !comparedMatches) {
+        return Number(matches[0]) === 0 ? Compare.EQ : Compare.GT;
+      }
+      if (!matches && comparedMatches) {
+        return Number(comparedMatches[0]) === 0
+          ? Compare.EQ
+          : Compare.LT;
+      }
+      if (matches && comparedMatches) {
+        if (Number(matches[0]) > Number(comparedMatches[0])) {
+          return Compare.GT;
+        }
+        if (Number(matches[0]) < Number(comparedMatches[0])) {
+          return Compare.LT;
+        }
+      }
+      if (!matches && !comparedMatches) {
+        return Compare.EQ;
+      }
+    }
+  }
+
+  detect(
+    userAgent:string,
+    targetBrowsers: Array<string>,
+  ) {
+    const currentBrowsers : Array<Browser> = [];
+   /**
+   * Convert userAgent to a group of matched `Browser` instances.
+   *
+   * @param {string} userAgent
+   * @returns {Browser[]}
+   */
+    browserMap.forEach(item=>{
+      let matches;
+      if (
+        item.excludes &&
+        item.excludes.some(rBrowser => rBrowser.exec(userAgent))
+      ) {
+        return;
+      }
+      for (const i in item.includes) {
+        matches = item.includes[i].exec(userAgent);
+        if (matches) {
+          currentBrowsers.push(
+             {
+              name: item.name,
+              version: matches[1].replace(/_/g, '.'),
+              primaryVersion: matches[2].replace(/_/g, '.')
+             }
+          );
+          break;
+        }
+      }
+    });
+
+    if (!currentBrowsers.length) {
       return false;
     }
-    else{
-      alert("All good");
+
+    const rBrowser = /(\w+) (([\d.]+)(?:-[\d.]+)?)/;
+    const rawTargetBrowsers : Array<Browser> = targetBrowsers.map( b => {
+      const matches = rBrowser.exec((
+        {
+          'op_mini all': 'op_mini 0',
+          'safari TP': 'safari 99',
+        }[b] || b
+      ));
+      return {name:matches![1], version: matches![2], primaryVersion: matches![3]};
+    },this);
+
+    const lowestVersionMap :{[key: string]: Browser} = {};
+    rawTargetBrowsers.forEach(browser=> {
+      if (!lowestVersionMap[browser.name]) {
+        lowestVersionMap[browser.name] = browser;
+        return;
+      }
+      if (
+        this.compareVersion(
+          browser.primaryVersion,
+          lowestVersionMap[browser.name].primaryVersion
+        ) === Compare.LT
+      ) {
+        lowestVersionMap[browser.name] = browser;
+      }
+    })
+
+    const normalizedTargetBrowsers = Object.values(lowestVersionMap);
+    const normalizedTargetBrowsersOfTheSameName =    
+      normalizedTargetBrowsers.filter(targetBrowser => currentBrowsers.map(currentBrowser => currentBrowser.name).includes(targetBrowser.name) )
+     
+    if (!normalizedTargetBrowsersOfTheSameName.length) {
+      return true;
+    }
+
+    return normalizedTargetBrowsersOfTheSameName.some(targetBrowser=> currentBrowsers.some(currentBrowser=>  currentBrowser.name === targetBrowser.name &&
+      this.compareVersion(
+        currentBrowser.primaryVersion,
+        targetBrowser.primaryVersion
+      ) !== Compare.LT) )
+  }
+  /**
+   * Test browser compatibility.
+   *
+   * @param {string[]} browsers Browser names in Can I Use.
+   * @returns {boolean}
+   */
+  test(browsers : Array<string>) {
+    if (!browsers.length) {
+      throw new Error('Parameter `browsers` is empty.');
+    }
+    const passed = this.detect(
+      navigator.userAgent,
+      browsers
+    );
+
+    if (!passed) {
+      const container = document.createElement("div");
+      container.onclick = function click() {
+        container.remove();
+      };
+      container.style.color = "#fff";
+      container.style.background = "red";
+      container.style.position = "fixed";
+      container.style.width = "100vw";
+      container.style.padding = "4px";
+      if(this.options.template)
+      container.innerHTML = this.options.template;
+      else
+      container.textContent = "Your browser is not supported, supported browsers here";
+      
+      document.body.appendChild(container);
+      return false;
     }
     return true;
   }
 }
+
+export default Obsolete;
