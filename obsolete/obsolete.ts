@@ -139,7 +139,7 @@ class Obsolete {
       ) {
         return;
       }
-      for (const i in item.includes) {
+      for (let i = 0; i < item.includes.length; i++) {
         matches = item.includes[i].exec(userAgent);
         if (matches) {
           currentBrowsers.push({
@@ -239,12 +239,13 @@ class Obsolete {
           'Your browser is not supported, supported browsers here';
 
       document.body.appendChild(container);
-      console.warn(`Supported Browsers: ${browsers}`);
-      console.warn(`User agent: ${navigator.userAgent}`);
+      console.log(`Supported Browsers: ${browsers}`);
+      console.log(`User agent: ${navigator.userAgent}`);
       return false;
     }
     return true;
   }
 }
 
+// todo for tests export is required, but it not necessary in plugin
 export default Obsolete;

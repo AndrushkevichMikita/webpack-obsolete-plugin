@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*"],
+  "include": ["obsolete/**/*"],
   "exclude": ["node_modules", "dist", "build", ".vscode", "tests"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
