@@ -69,10 +69,7 @@ const browserMap = [
 
 class Obsolete {
   static defaultOptions = {
-    template: '<div>Your browser is not supported.</div>',
-    position: 'afterbegin',
-    promptOnNonTargetBrowser: false,
-    promptOnUnknownBrowser: true
+    template: '<div>Your browser is not supported.</div>'
   };
 
   /**
@@ -190,13 +187,13 @@ class Obsolete {
       }
     });
 
-    const normalizedTargetBrowsers = Object.values(lowestVersionMap);
-    const normalizedTargetBrowsersOfTheSameName =
-      normalizedTargetBrowsers.filter((targetBrowser) =>
-        currentBrowsers
-          .map((currentBrowser) => currentBrowser.name)
-          .includes(targetBrowser.name)
-      );
+    const normalizedTargetBrowsersOfTheSameName = Object.values(
+      lowestVersionMap
+    ).filter((targetBrowser) =>
+      currentBrowsers
+        .map((currentBrowser) => currentBrowser.name)
+        .includes(targetBrowser.name)
+    );
 
     if (!normalizedTargetBrowsersOfTheSameName.length) {
       return true;
@@ -242,6 +239,8 @@ class Obsolete {
           'Your browser is not supported, supported browsers here';
 
       document.body.appendChild(container);
+      console.warn(`Supported Browsers: ${browsers}`);
+      console.warn(`User agent: ${navigator.userAgent}`);
       return false;
     }
     return true;
