@@ -1,0 +1,12 @@
+{
+  "compress": {},
+  "ecma": 5,
+  "enclose": false,
+  "keep_classnames": false,
+  "keep_fnames": false,
+  "ie8": false,
+  "module": false,
+  "nameCache": null,
+  "safari10": true,
+  "toplevel": true
+}

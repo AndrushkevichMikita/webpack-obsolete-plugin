@@ -93,8 +93,8 @@ class ObsoleteWebpackPlugin {
         this.indent(`(function() {`, 0),
         this.indent(`'use strict';`, 2),
         this.indent(
-          `new Obsolete(${this.stringify(slimOptions)}).test(${this.stringify(
-            browserslist()
+          `obsolete(${this.stringify(browserslist())},${this.stringify(
+            slimOptions
           )});`,
           2
         ),

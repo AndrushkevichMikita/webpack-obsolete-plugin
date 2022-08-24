@@ -8,12 +8,13 @@ interface Browser {
   name: string;
 }
 
-enum Compare {
+const enum Compare {
   GT = 1,
   EQ = 0,
   LT = -1
 }
 
+const excludes = [/Mobile/i];
 const browserMap = [
   {
     name: 'ie',
@@ -21,27 +22,27 @@ const browserMap = [
       /Trident\/[.\w]+.+?rv:((\d+)[.\w]*)/i,
       /MSIE ((\d+\.\d+)[.\w]*)/i
     ],
-    excludes: [/Mobile/i]
+    excludes
   },
   {
     name: 'edge',
     includes: [/Edge\/((\d+)[.\w]*)/i],
-    excludes: [/Mobile/i]
+    excludes
   },
   {
     name: 'chrome',
     includes: [/Chrome\/((\d+)[.\w]*)/i],
-    excludes: [/Mobile/i]
+    excludes
   },
   {
     name: 'safari',
     includes: [/Version\/((\d+\.\d+)[.\w]*).+Safari/i],
-    excludes: [/Mobile/i]
+    excludes
   },
   {
     name: 'firefox',
     includes: [/Firefox\/((\d+\.\d+)[.\w]*)/i],
-    excludes: [/Mobile/i]
+    excludes
   },
   {
     name: 'opera',
@@ -67,31 +68,16 @@ const browserMap = [
   }
 ];
 
-class Obsolete {
-  static defaultOptions = {
-    template: '<div>Your browser is not supported.</div>'
-  };
+function obsolete(browsers: Array<string>, options?: Options) {
+  options = { ...options };
 
-  /**
-   * @param {Object} [options]
-   * @param {string} [options.template] The prompt html template. It accepts any document fragment.
-   */
-
-  options: Options;
-  constructor(options: Options) {
-    this.options = {
-      ...Obsolete.defaultOptions,
-      ...options
-    };
-  }
-
-  compareVersion(version: string, comparedVersion: string) {
+  function compareVersion(version: string, comparedVersion: string) {
     const rVersion = /\d+/g;
     const rComparedVersion = /\d+/g;
 
     const rValidator = /^(\d+)(\.\d+)*$/;
     [version, comparedVersion].forEach((v) => {
-      if (!rValidator.test(version)) {
+      if (!rValidator.test(v)) {
         throw new Error(
           `Parameter \`version\` \`${version}\` isn't a semantic version.`
         );
@@ -123,14 +109,9 @@ class Obsolete {
     }
   }
 
-  detect(userAgent: string, targetBrowsers: Array<string>) {
+  function detect(userAgent: string, targetBrowsers: Array<string>) {
     const currentBrowsers: Array<Browser> = [];
-    /**
-     * Convert userAgent to a group of matched `Browser` instances.
-     *
-     * @param {string} userAgent
-     * @returns {Browser[]}
-     */
+    // Convert userAgent to a group of matched `Browser` instances
     browserMap.forEach((item) => {
       let matches;
       if (
@@ -169,7 +150,7 @@ class Obsolete {
         version: matches![2],
         primaryVersion: matches![3]
       };
-    }, this);
+    });
 
     const lowestVersionMap: { [key: string]: Browser } = {};
     rawTargetBrowsers.forEach((browser) => {
@@ -178,7 +159,7 @@ class Obsolete {
         return;
       }
       if (
-        this.compareVersion(
+        compareVersion(
           browser.primaryVersion,
           lowestVersionMap[browser.name].primaryVersion
         ) === Compare.LT
@@ -187,65 +168,121 @@ class Obsolete {
       }
     });
 
-    const normalizedTargetBrowsersOfTheSameName = Object.values(
-      lowestVersionMap
-    ).filter((targetBrowser) =>
-      currentBrowsers
-        .map((currentBrowser) => currentBrowser.name)
-        .includes(targetBrowser.name)
-    );
+    const normalizedTargetBrowsersOfTheSameName = Object.keys(lowestVersionMap)
+      .filter((key) =>
+        currentBrowsers.some((b) => b.name === lowestVersionMap[key].name)
+      )
+      .map((key) => lowestVersionMap[key]);
 
     if (!normalizedTargetBrowsersOfTheSameName.length) {
-      return true;
+      return false;
     }
 
     return normalizedTargetBrowsersOfTheSameName.some((targetBrowser) =>
       currentBrowsers.some(
-        (currentBrowser) =>
-          currentBrowser.name === targetBrowser.name &&
-          this.compareVersion(
-            currentBrowser.primaryVersion,
-            targetBrowser.primaryVersion
-          ) !== Compare.LT
+        (c) =>
+          c.name === targetBrowser.name &&
+          compareVersion(c.primaryVersion, targetBrowser.primaryVersion) !==
+            Compare.LT
       )
     );
   }
-  /**
-   * Test browser compatibility.
-   *
-   * @param {string[]} browsers Browser names in Can I Use.
-   * @returns {boolean}
-   */
-  test(browsers: Array<string>) {
-    if (!browsers.length) {
-      throw new Error('Parameter `browsers` is empty.');
-    }
 
-    const passed = this.detect(navigator.userAgent, browsers);
-
-    if (!passed) {
-      const container = document.createElement('div');
-      container.onclick = function click() {
-        container.remove();
-      };
-      container.style.color = '#fff';
-      container.style.background = 'red';
-      container.style.position = 'fixed';
-      container.style.width = '100vw';
-      container.style.padding = '4px';
-      if (this.options.template) container.innerHTML = this.options.template;
-      else
-        container.textContent =
-          'Your browser is not supported, supported browsers here';
-
-      document.body.appendChild(container);
-      console.log(`Supported Browsers: ${browsers}`);
-      console.log(`User agent: ${navigator.userAgent}`);
-      return false;
-    }
-    return true;
+  /** Test browser compatibility */
+  if (!browsers.length) {
+    throw new Error('Parameter `browsers` is empty');
   }
+
+  const passed = detect(navigator.userAgent, browsers);
+  if (!passed) {
+    const animationTimeMs = 500;
+    const s = document.createElement('style');
+    document.head.appendChild(s);
+    const animRule = `anim-obsolete-close ${animationTimeMs}ms forwards ease-in-out`;
+    const animFrame = `anim-obsolete-close {to { transform: translateY(-100%) }}`;
+    s.textContent = `[data-obsolete-init] {
+color: #fff;
+background: red;
+position: fixed;
+width: 100vw;
+padding: 4px;
+white-space: pre;
+top: 0; left: 0;
+text-align: center;
+}
+[data-obsolete-init] a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+[data-obsolete-close] {
+-webkit-animation: ${animRule};
+-moz-animation: ${animRule};
+animation: ${animRule};
+}
+@-webkit-keyframes ${animFrame}
+@-moz-keyframes ${animFrame}
+@keyframes ${animFrame}`;
+    const w = document.createElement('div');
+    w.setAttribute('data-obsolete-init', '');
+
+    let wasMouseMove = false;
+    w.addEventListener('mousemove', () => (wasMouseMove = true), {
+      passive: true
+    });
+    w.addEventListener(
+      'click',
+      (e) => {
+        if (wasMouseMove) {
+          wasMouseMove = false;
+        }
+        if (e.target instanceof HTMLAnchorElement) {
+          if (!e.target.hasAttribute('href')) {
+            const tab = window.open()!;
+            tab.document.write(browsers.join('\n'));
+            tab.document.body.style.whiteSpace = 'pre';
+            tab.document.body.style.display = 'flex';
+            tab.document.body.style.justifyContent = 'center';
+            tab.document.close();
+          }
+        } else {
+          w.setAttribute('data-obsolete-close', '');
+          setTimeout(() => {
+            w.parentElement!.removeChild(w);
+            document.head.removeChild(s);
+          }, animationTimeMs);
+        }
+      },
+      { passive: true }
+    );
+
+    if (options.template) {
+      w.innerHTML = options.template.replace(
+        '{{browsers}}',
+        browsers.join('\n')
+      );
+    } else {
+      const c = w.appendChild(document.createElement('div'));
+      c.textContent = `Your browser is not supported`;
+      const a = w.appendChild(document.createElement('a'));
+      a.textContent = 'Show supported browsers';
+    }
+
+    if (!document.body) {
+      window.addEventListener('load', () => document.body.appendChild(w), {
+        once: true,
+        passive: true
+      });
+    } else document.body.appendChild(w);
+
+    console && //it's important for IE
+      console.error('Not supported browser', {
+        supportedBrowsers: browsers,
+        userAgent: window.navigator && window.navigator.userAgent
+      });
+  }
+  return passed;
 }
 
-// todo for tests export is required, but it not necessary in plugin
-export default Obsolete;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+window.obsolete = obsolete;

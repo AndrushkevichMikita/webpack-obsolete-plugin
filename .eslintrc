@@ -10,6 +10,7 @@
   ],
   "rules": {
     "no-console": "off",
-    "prettier/prettier": 2
+    "prettier/prettier": 2,
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 }
