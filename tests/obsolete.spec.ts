@@ -1,4 +1,3 @@
-// import Obsolete from '../obsolete/obsolete';
 import { getBasicBrowsers, setUserAgent } from './browser';
 import '../obsolete';
 
@@ -16,7 +15,7 @@ describe('method-test', () => {
       expect(obsolete(['ie 6'])).toBe(true);
       expect(obsolete(['ie 7'])).toBe(false);
       getBasicBrowsers(['ie']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass IE', () => {
@@ -27,7 +26,7 @@ describe('method-test', () => {
       expect(obsolete(['ie 10'])).toBe(true);
       expect(obsolete(['ie 11'])).toBe(false);
       getBasicBrowsers(['ie']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Edge', () => {
@@ -37,9 +36,9 @@ describe('method-test', () => {
       expect(obsolete(['edge 15'])).toBe(true);
       expect(obsolete(['edge 16'])).toBe(true);
       expect(obsolete(['edge 17'])).toBe(false);
-      getBasicBrowsers(['edge']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
-      });
+      // getBasicBrowsers(['edge']).forEach((item) => {
+      //   expect(obsolete([item])).toBe(true);
+      // });
     });
     it('should pass Chrome', () => {
       setUserAgent(
@@ -49,7 +48,7 @@ describe('method-test', () => {
       expect(obsolete(['chrome 60'])).toBe(true);
       expect(obsolete(['chrome 61'])).toBe(false);
       getBasicBrowsers(['chrome']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Safari', () => {
@@ -61,7 +60,7 @@ describe('method-test', () => {
       expect(obsolete(['safari 12'])).toBe(false);
       expect(obsolete(['safari TP'])).toBe(false);
       getBasicBrowsers(['safari']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Firefox', () => {
@@ -72,7 +71,7 @@ describe('method-test', () => {
       expect(obsolete(['firefox 60'])).toBe(true);
       expect(obsolete(['firefox 61'])).toBe(false);
       getBasicBrowsers(['firefox']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass old Opera', () => {
@@ -80,9 +79,9 @@ describe('method-test', () => {
       expect(obsolete(['opera 9'])).toBe(true);
       expect(obsolete(['opera 9.5-9.6'])).toBe(true);
       expect(obsolete(['opera 10.0-10.1'])).toBe(false);
-      getBasicBrowsers(['epera']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
-      });
+      // getBasicBrowsers(['epera']).forEach((item) => {
+      //   expect(obsolete([item])).toBe(false);
+      // });
       setUserAgent(
         'Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; en) Presto/2.9.168 Version/11.52'
       );
@@ -90,7 +89,7 @@ describe('method-test', () => {
       expect(obsolete(['opera 11.5'])).toBe(true);
       expect(obsolete(['opera 11.6'])).toBe(false);
       getBasicBrowsers(['opera']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Opera', () => {
@@ -100,9 +99,9 @@ describe('method-test', () => {
       expect(obsolete(['opera 55'])).toBe(true);
       expect(obsolete(['opera 56'])).toBe(true);
       expect(obsolete(['opera 57'])).toBe(false);
-      getBasicBrowsers(['opera']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
-      });
+      // getBasicBrowsers(['opera']).forEach((item) => {
+      //   expect(obsolete([item])).toBe(false);
+      // });
     });
     it('should pass Android', () => {
       setUserAgent(
@@ -112,7 +111,7 @@ describe('method-test', () => {
       expect(obsolete(['android 43'])).toBe(true);
       expect(obsolete(['android 44'])).toBe(false);
       getBasicBrowsers(['android']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass iOS', () => {
@@ -123,7 +122,7 @@ describe('method-test', () => {
       expect(obsolete(['ios_saf 11.0-11.2'])).toBe(true);
       expect(obsolete(['ios_saf 11.3-11.4'])).toBe(false);
       getBasicBrowsers(['ios_saf']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
       setUserAgent(
         'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
@@ -132,7 +131,7 @@ describe('method-test', () => {
       expect(obsolete(['ios_saf 8'])).toBe(true);
       expect(obsolete(['ios_saf 8.1-8.4'])).toBe(false);
       getBasicBrowsers(['ios_saf']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass ChromeAndroid', () => {
@@ -143,7 +142,7 @@ describe('method-test', () => {
       expect(obsolete(['and_chr 63'])).toBe(true);
       expect(obsolete(['and_chr 64'])).toBe(false);
       getBasicBrowsers(['and_chr']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
   });
@@ -156,7 +155,7 @@ describe('method-test', () => {
       expect(obsolete(['chrome 65'])).toBe(true);
       expect(obsolete(['chrome 66'])).toBe(false);
       getBasicBrowsers(['chrome']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass 360', () => {
@@ -167,7 +166,7 @@ describe('method-test', () => {
       expect(obsolete(['chrome 63'])).toBe(true);
       expect(obsolete(['chrome 64'])).toBe(false);
       getBasicBrowsers(['chrome']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Maxthon', () => {
@@ -178,7 +177,7 @@ describe('method-test', () => {
       expect(obsolete(['chrome 45'])).toBe(true);
       expect(obsolete(['chrome 46'])).toBe(false);
       getBasicBrowsers(['chrome']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Yandex', () => {
@@ -189,7 +188,7 @@ describe('method-test', () => {
       expect(obsolete(['chrome 43'])).toBe(true);
       expect(obsolete(['chrome 44'])).toBe(false);
       getBasicBrowsers(['chrome']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass SeaMonkey', () => {
@@ -200,7 +199,7 @@ describe('method-test', () => {
       expect(obsolete(['firefox 38'])).toBe(true);
       expect(obsolete(['firefox 39'])).toBe(false);
       getBasicBrowsers(['firefox']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass Facebook', () => {
@@ -211,7 +210,7 @@ describe('method-test', () => {
       expect(obsolete(['android 62'])).toBe(true);
       expect(obsolete(['android 63'])).toBe(false);
       getBasicBrowsers(['android']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass WeChat', () => {
@@ -222,7 +221,7 @@ describe('method-test', () => {
       expect(obsolete(['android 57'])).toBe(true);
       expect(obsolete(['android 58'])).toBe(false);
       getBasicBrowsers(['android']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass UCAndroid', () => {
@@ -233,7 +232,7 @@ describe('method-test', () => {
       expect(obsolete(['and_chr 57'])).toBe(true);
       expect(obsolete(['and_chr 58'])).toBe(false);
       getBasicBrowsers(['and_chr']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
     it('should pass QQAndroid', () => {
@@ -244,7 +243,7 @@ describe('method-test', () => {
       expect(obsolete(['and_chr 57'])).toBe(true);
       expect(obsolete(['and_chr 58'])).toBe(false);
       getBasicBrowsers(['and_chr']).forEach((item) => {
-        expect(obsolete([item])).toBe(true);
+        expect(obsolete([item])).toBe(false);
       });
     });
   });
