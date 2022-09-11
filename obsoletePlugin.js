@@ -84,7 +84,7 @@ class ObsoleteWebpackPlugin {
       (value) => !['', null, undefined].includes(value)
     );
     // todo mb error in path
-    const fileContent = readFileSync('../build/obsolete.js', {
+    const fileContent = readFileSync('build/obsolete.js', {
       encoding: 'utf-8'
     });
     return (
