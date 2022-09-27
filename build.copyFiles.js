@@ -14,7 +14,7 @@ fs.mkdirSync(out);
   "./package.json", //
   "./README.md", //
   "./index.js", //
-  "./LICENSE.md",
+  "./LICENSE",
 ].forEach((f) => {
   fs.copyFileSync(f, path.resolve(out, f));
 });
