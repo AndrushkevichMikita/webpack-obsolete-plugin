@@ -1,14 +1,30 @@
 {
   "name": "obsolete-plugin",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Webpack plugin generates a browser-side standalone script that detects browser compatibility based on `Browserslist` and prompts website users to upgrade it.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "webpack",
+    "plugin",
+    "obsolete",
+    "obsolete-web",
+    "obsolete-webpack-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrushkevichMikita/webpack-obsolete-plugin"
+  },
+  "author": "AndrushkevichMikita",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yegorich555/webpack-mock-server/issues"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext **/*.{js,ts,html} && prettier **/*.{js,ts,html} --write",
     "build": "node .\\build.copyFiles.js && tsc && terser build/obsolete.js -o build/obsolete.js --config-file terserOptions.json && node .\\obsolete.copyFiles.js"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^28.1.6",
     "@typescript-eslint/eslint-plugin": "^5.33.1",

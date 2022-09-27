@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
-const browserslist = require('browserslist');
+const browserslist = require("browserslist");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { readFileSync } = require('fs');
+const { readFileSync } = require("fs");
 
 /** @type {import('webpack').library.AbstractLibraryPlugin} */
 class ObsoleteWebpackPlugin {
   constructor(options) {
     const defaultOptions = {
-      name: 'obsolete'
+      name: "obsolete",
     };
 
     this.options = {
       ...defaultOptions,
-      ...options
+      ...options,
     };
   }
 
@@ -25,13 +25,13 @@ class ObsoleteWebpackPlugin {
    * @param {number} size
    */
   indent(str, size) {
-    return ' '.repeat(size) + str.replace(/\n/g, `$&${' '.repeat(size)}`);
+    return " ".repeat(size) + str.replace(/\n/g, `$&${" ".repeat(size)}`);
   }
 
   stringify(json, indent = 2) {
     return JSON.stringify(json, null, indent)
       .replace(/"/g, `'`)
-      .replace(/'(\w+)':/g, '$1:');
+      .replace(/'(\w+)':/g, "$1:");
   }
 
   filterObject(object, callback, thisArg) {
@@ -51,19 +51,19 @@ class ObsoleteWebpackPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: this.constructor.name,
-          stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_PRE_PROCESS
+          stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_PRE_PROCESS,
         },
         () => {
-          const chunk = compilation.addChunk('obsolete');
-          chunk.id = 'obsolete';
-          chunk.ids = ['obsolete'];
+          const chunk = compilation.addChunk("obsolete");
+          chunk.id = "obsolete";
+          chunk.ids = ["obsolete"];
           // eslint-disable-next-line no-restricted-syntax
           for (const entrypoint of compilation.entrypoints.values()) {
             if (entrypoint.pushChunk(chunk)) {
               chunk.addGroup(entrypoint);
             }
           }
-          const tmpFile = 'obsolete.js';
+          const tmpFile = "obsolete.js";
           chunk.files.add(tmpFile);
           const { RawSource } = compiler.webpack.sources;
           const obsoleteFileContent = this.composeCode(this.options);
@@ -77,29 +77,21 @@ class ObsoleteWebpackPlugin {
 
   composeCode(context) {
     const options = {
-      template: context.template
+      template: context.template,
     };
-    const slimOptions = this.filterObject(
-      options,
-      (value) => !['', null, undefined].includes(value)
-    );
+    const slimOptions = this.filterObject(options, (value) => !["", null, undefined].includes(value));
     // todo mb error in path
-    const fileContent = readFileSync('build/obsolete.js', {
-      encoding: 'utf-8'
+    const fileContent = readFileSync("build/obsolete.js", {
+      encoding: "utf-8",
     });
     return (
       fileContent +
       [
         this.indent(`(function() {`, 0),
         this.indent(`'use strict';`, 2),
-        this.indent(
-          `obsolete(${this.stringify(browserslist())},${this.stringify(
-            slimOptions
-          )});`,
-          2
-        ),
-        this.indent(`})();\n`, 0)
-      ].join('\n')
+        this.indent(`obsolete(${this.stringify(browserslist())},${this.stringify(slimOptions)});`, 2),
+        this.indent(`})();\n`, 0),
+      ].join("\n")
     );
   }
 }
