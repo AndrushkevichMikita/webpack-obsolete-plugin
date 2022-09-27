@@ -7,7 +7,7 @@ const { readFileSync } = require("fs");
 const path = require("path");
 
 /** @type {import('webpack').library.AbstractLibraryPlugin} */
-class ObsoleteWebpackPlugin {
+class WebpackObsoletePlugin {
   constructor(options) {
     const defaultOptions = {
       name: "obsolete",
@@ -95,4 +95,4 @@ class ObsoleteWebpackPlugin {
     );
   }
 }
-module.exports = ObsoleteWebpackPlugin;
+module.exports = WebpackObsoletePlugin;

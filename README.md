@@ -4,9 +4,9 @@
 
 These plugin generates a browser-side standalone script that detects browser compatibility based on [Browserslist](https://github.com/browserslist/browserslist) and prompts website users to upgrade it.
 
-[![npm version](https://img.shields.io/npm/v/obsolete-plugin.svg?style=flat-square)](https://www.npmjs.com/package/obsolete-plugin)
-[![install size](https://packagephobia.now.sh/badge?p=obsolete-plugin)](https://packagephobia.now.sh/result?p=obsolete-plugin)
-[![npm downloads](https://img.shields.io/npm/dm/obsolete-plugin.svg?style=flat-square)](http://npm-stat.com/charts.html?package=obsolete-plugin)
+[![npm version](https://img.shields.io/npm/v/webpack-obsolete-plugin.svg?style=flat-square)](https://www.npmjs.com/package/webpack-obsolete-plugin)
+[![install size](https://packagephobia.now.sh/badge?p=webpack-obsolete-plugin)](https://packagephobia.now.sh/result?p=webpack-obsolete-plugin)
+[![npm downloads](https://img.shields.io/npm/dm/webpack-obsolete-plugin.svg?style=flat-square)](http://npm-stat.com/charts.html?package=webpack-obsolete-plugin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Motivation
@@ -36,14 +36,14 @@ Apply the plugin in your Webpack configuration, often used together with [html-w
 
 ```js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ObsoletePlugin = require('webpack-obsolete-plugin');
+const WebpackObsoletePlugin = require('webpack-obsolete-plugin');
 
 module.exports = {
   // ...
   plugins: [
     // ...
     new HtmlWebpackPlugin(),
-    new ObsoletePlugin()
+    new WebpackObsoletePlugin()
   ]
 };
 ```
