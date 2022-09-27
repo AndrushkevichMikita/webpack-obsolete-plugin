@@ -9,7 +9,6 @@ fs.rmdirSync(out, {
   recursive: true,
 });
 fs.mkdirSync(out);
-
 [
   "./package.json", //
   "./README.md", //
