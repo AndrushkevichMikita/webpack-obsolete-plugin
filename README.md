@@ -53,7 +53,7 @@ module.exports = {
 ### Options
 
 | Name | Type | Description
-| :-: | :-: | :-: | :-:
+| :-: | :-: | :-:
 | template | string | You can paste any custom html you want, it will replace default.In addition you can place {{browsers}} in your html, it will be replaced with browsers from your [Browserslist](https://github.com/browserslist/browserslist). Links without the "href" attribute will be fire new tab and display supported browsers from your [Browserslist](https://github.com/browserslist/browserslist).
 
 ## Browser Support

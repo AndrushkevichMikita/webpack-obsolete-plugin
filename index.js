@@ -4,6 +4,7 @@
 const browserslist = require("browserslist");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { readFileSync } = require("fs");
+const path = require("path");
 
 /** @type {import('webpack').library.AbstractLibraryPlugin} */
 class ObsoleteWebpackPlugin {
@@ -80,8 +81,7 @@ class ObsoleteWebpackPlugin {
       template: context.template,
     };
     const slimOptions = this.filterObject(options, (value) => !["", null, undefined].includes(value));
-    // todo mb error in path
-    const fileContent = readFileSync("build/obsolete.js", {
+    const fileContent = readFileSync(path.resolve(__dirname, "obsolete.js"), {
       encoding: "utf-8",
     });
     return (
