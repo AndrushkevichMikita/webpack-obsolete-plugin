@@ -1,5 +1,6 @@
 interface Options {
   template?: string;
+  isStrict?: boolean;
 }
 
 interface Browser {
@@ -11,61 +12,53 @@ interface Browser {
 const enum Compare {
   GT = 1,
   EQ = 0,
-  LT = -1
+  LT = -1,
 }
 
 const excludes = [/Mobile/i];
 const browserMap = [
   {
-    name: 'ie',
-    includes: [
-      /Trident\/[.\w]+.+?rv:((\d+)[.\w]*)/i,
-      /MSIE ((\d+\.\d+)[.\w]*)/i
-    ],
-    excludes
+    name: "ie",
+    includes: [/Trident\/[.\w]+.+?rv:((\d+)[.\w]*)/i, /MSIE ((\d+\.\d+)[.\w]*)/i],
+    excludes,
   },
   {
-    name: 'edge',
-    includes: [/Edge\/((\d+)[.\w]*)/i],
-    excludes
+    name: "edge",
+    includes: [/Edg\/((\d+)[.\w]*)/i, /Edge\/((\d+)[.\w]*)/i],
   },
   {
-    name: 'chrome',
+    name: "chrome",
     includes: [/Chrome\/((\d+)[.\w]*)/i],
-    excludes
+    excludes,
   },
   {
-    name: 'safari',
+    name: "safari",
     includes: [/Version\/((\d+\.\d+)[.\w]*).+Safari/i],
-    excludes
+    excludes,
   },
   {
-    name: 'firefox',
+    name: "firefox",
     includes: [/Firefox\/((\d+\.\d+)[.\w]*)/i],
-    excludes
+    excludes,
   },
   {
-    name: 'opera',
-    includes: [
-      /OPR\/((\d+)[.\w]*)/i,
-      /Presto\/[.\w]+.+Version\/((\d+\.\d)[.\w]*)/i,
-      /Opera\/((\d+\.\d)[.\w]*)/i
-    ],
-    excludes: [/Mobile|Mobi|Tablet/i]
+    name: "opera",
+    includes: [/OPR\/((\d+)[.\w]*)/i, /Presto\/[.\w]+.+Version\/((\d+\.\d)[.\w]*)/i, /Opera\/((\d+\.\d)[.\w]*)/i],
+    excludes: [/Mobile|Mobi|Tablet/i],
   },
   {
-    name: 'android',
-    includes: [/wv.+?Chrome\/((\d+)[.\w]*)/i]
+    name: "android",
+    includes: [/wv.+?Chrome\/((\d+)[.\w]*)/i],
   },
   {
-    name: 'ios_saf',
-    includes: [/(iPad|iPhone).+OS ((\d+_\d+)\w*)/i]
+    name: "ios_saf",
+    includes: [/(iPad|iPhone).+OS ((\d+_\d+)\w*)/i],
   },
   {
-    name: 'and_chr', // Chrome for mobile
+    name: "and_chr", // Chrome for mobile
     includes: [/Chrome\/((\d+)[.\w]*).+Mobile/i],
-    excludes: [/wv/i]
-  }
+    excludes: [/wv/i],
+  },
 ];
 
 function obsolete(browsers: Array<string>, options?: Options) {
@@ -78,9 +71,7 @@ function obsolete(browsers: Array<string>, options?: Options) {
     const rValidator = /^(\d+)(\.\d+)*$/;
     [version, comparedVersion].forEach((v) => {
       if (!rValidator.test(v)) {
-        throw new Error(
-          `Parameter \`version\` \`${version}\` isn't a semantic version.`
-        );
+        throw new Error(`Parameter \`version\` \`${version}\` isn't a semantic version.`);
       }
     });
 
@@ -109,94 +100,82 @@ function obsolete(browsers: Array<string>, options?: Options) {
     }
   }
 
-  function detect(userAgent: string, targetBrowsers: Array<string>) {
-    const currentBrowsers: Array<Browser> = [];
+  function detect(userAgent: string, expectedBrowsers: Array<string>) {
+    const actualBrowsers: Array<Browser> = [];
     // Convert userAgent to a group of matched `Browser` instances
     browserMap.forEach((item) => {
       let matches;
-      if (
-        item.excludes &&
-        item.excludes.some((rBrowser) => rBrowser.exec(userAgent))
-      ) {
+      if (item.excludes && item.excludes.some((rBrowser) => rBrowser.exec(userAgent))) {
         return;
       }
       for (let i = 0; i < item.includes.length; i++) {
         matches = item.includes[i].exec(userAgent);
         if (matches) {
-          currentBrowsers.push({
+          actualBrowsers.push({
             name: item.name,
-            version: matches[1].replace(/_/g, '.'),
-            primaryVersion: matches[2].replace(/_/g, '.')
+            version: matches[1].replace(/_/g, "."),
+            primaryVersion: matches[2].replace(/_/g, "."),
           });
           break;
         }
       }
     });
 
-    if (!currentBrowsers.length) {
+    if (!actualBrowsers.length) {
       return false;
     }
 
     const rBrowser = /(\w+) (([\d.]+)(?:-[\d.]+)?)/;
-    const rawTargetBrowsers: Array<Browser> = targetBrowsers.map((b) => {
-      const matches = rBrowser.exec(
-        {
-          'op_mini all': 'op_mini 0',
-          'safari TP': 'safari 99'
-        }[b] || b
-      );
-      return {
-        name: matches![1],
-        version: matches![2],
-        primaryVersion: matches![3]
-      };
-    });
-
     const lowestVersionMap: { [key: string]: Browser } = {};
-    rawTargetBrowsers.forEach((browser) => {
-      if (!lowestVersionMap[browser.name]) {
-        lowestVersionMap[browser.name] = browser;
-        return;
-      }
-      if (
-        compareVersion(
-          browser.primaryVersion,
-          lowestVersionMap[browser.name].primaryVersion
-        ) === Compare.LT
-      ) {
-        lowestVersionMap[browser.name] = browser;
-      }
-    });
+    expectedBrowsers
+      .map((b) => {
+        const matches = rBrowser.exec(
+          {
+            "op_mini all": "op_mini 0",
+            "safari TP": "safari 99",
+          }[b] || b
+        );
+        return {
+          name: matches![1],
+          version: matches![2],
+          primaryVersion: matches![3],
+        };
+      })
+      .forEach((browser) => {
+        if (!lowestVersionMap[browser.name]) {
+          lowestVersionMap[browser.name] = browser;
+          return;
+        }
+        if (compareVersion(browser.primaryVersion, lowestVersionMap[browser.name].primaryVersion) === Compare.LT) {
+          lowestVersionMap[browser.name] = browser;
+        }
+      });
 
-    const normalizedTargetBrowsersOfTheSameName = Object.keys(lowestVersionMap)
-      .filter((key) =>
-        currentBrowsers.some((b) => b.name === lowestVersionMap[key].name)
-      )
+    const normalized = Object.keys(lowestVersionMap)
+      .filter((key) => actualBrowsers.some((b) => b.name === lowestVersionMap[key].name))
       .map((key) => lowestVersionMap[key]);
 
-    if (!normalizedTargetBrowsersOfTheSameName.length) {
+    if (!normalized.length) {
       return false;
     }
+    const fc = (t: Browser) =>
+      actualBrowsers.some(
+        (c) => c.name === t.name && compareVersion(c.primaryVersion, t.primaryVersion) !== Compare.LT
+      );
 
-    return normalizedTargetBrowsersOfTheSameName.some((targetBrowser) =>
-      currentBrowsers.some(
-        (c) =>
-          c.name === targetBrowser.name &&
-          compareVersion(c.primaryVersion, targetBrowser.primaryVersion) !==
-            Compare.LT
-      )
-    );
+    if (options?.isStrict) return normalized.every((t) => fc(t));
+    return normalized.some((t) => fc(t));
   }
 
   /** Test browser compatibility */
   if (!browsers.length) {
-    throw new Error('Parameter `browsers` is empty');
+    throw new Error("Parameter `browsers` is empty");
   }
 
   const passed = detect(navigator.userAgent, browsers);
   if (!passed) {
     const animationTimeMs = 500;
-    const s = document.createElement('style');
+    const s = document.createElement("style");
     document.head.appendChild(s);
     const animRule = `anim-obsolete-close ${animationTimeMs}ms forwards ease-in-out`;
     const animFrame = `anim-obsolete-close {to { transform: translateY(-100%) }}`;
@@ -222,30 +201,30 @@ animation: ${animRule};
 @-webkit-keyframes ${animFrame}
 @-moz-keyframes ${animFrame}
 @keyframes ${animFrame}`;
-    const w = document.createElement('div');
-    w.setAttribute('data-obsolete-init', '');
+    const w = document.createElement("div");
+    w.setAttribute("data-obsolete-init", "");
 
     let wasMouseMove = false;
-    w.addEventListener('mousemove', () => (wasMouseMove = true), {
-      passive: true
+    w.addEventListener("mousemove", () => (wasMouseMove = true), {
+      passive: true,
     });
     w.addEventListener(
-      'click',
+      "click",
       (e) => {
         if (wasMouseMove) {
           wasMouseMove = false;
         }
         if (e.target instanceof HTMLAnchorElement) {
-          if (!e.target.hasAttribute('href')) {
+          if (!e.target.hasAttribute("href")) {
             const tab = window.open()!;
-            tab.document.write(browsers.join('\n'));
-            tab.document.body.style.whiteSpace = 'pre';
-            tab.document.body.style.display = 'flex';
-            tab.document.body.style.justifyContent = 'center';
+            tab.document.write(browsers.join("\n"));
+            tab.document.body.style.whiteSpace = "pre";
+            tab.document.body.style.display = "flex";
+            tab.document.body.style.justifyContent = "center";
             tab.document.close();
           }
         } else {
-          w.setAttribute('data-obsolete-close', '');
+          w.setAttribute("data-obsolete-close", "");
           setTimeout(() => {
             w.parentElement!.removeChild(w);
             document.head.removeChild(s);
@@ -256,28 +235,25 @@ animation: ${animRule};
     );
 
     if (options.template) {
-      w.innerHTML = options.template.replace(
-        '{{browsers}}',
-        browsers.join('\n')
-      );
+      w.innerHTML = options.template.replace("{{browsers}}", browsers.join("\n"));
     } else {
-      const c = w.appendChild(document.createElement('div'));
+      const c = w.appendChild(document.createElement("div"));
       c.textContent = `Your browser is not supported`;
-      const a = w.appendChild(document.createElement('a'));
-      a.textContent = 'Show supported browsers';
+      const a = w.appendChild(document.createElement("a"));
+      a.textContent = "Show supported browsers";
     }
 
     if (!document.body) {
-      window.addEventListener('load', () => document.body.appendChild(w), {
+      window.addEventListener("load", () => document.body.appendChild(w), {
         once: true,
-        passive: true
+        passive: true,
       });
     } else document.body.appendChild(w);
 
     console && //it's important for IE
-      console.error('Not supported browser', {
+      console.error("Not supported browser", {
         supportedBrowsers: browsers,
-        userAgent: window.navigator && window.navigator.userAgent
+        userAgent: window.navigator && window.navigator.userAgent,
       });
   }
   return passed;
