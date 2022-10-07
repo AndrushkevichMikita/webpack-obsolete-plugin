@@ -399,69 +399,7 @@ describe("method-test", () => {
       setUserAgent(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30"
       );
-      expect(
-        obsolete(
-          [
-            "and_chr 104",
-            "and_ff 101",
-            "chrome 104",
-            "chrome 103",
-            "chrome 102",
-            "chrome 101",
-            "chrome 100",
-            "chrome 99",
-            "chrome 98",
-            "chrome 97",
-            "chrome 96",
-            "chrome 95",
-            "edge 104",
-            "edge 103",
-            "edge 102",
-            "edge 101",
-            "edge 100",
-            "firefox 103",
-            "firefox 102",
-            "firefox 101",
-            "firefox 100",
-            "firefox 99",
-            "firefox 98",
-            "firefox 97",
-            "firefox 96",
-            "firefox 95",
-            "ios_saf 15.5",
-            "ios_saf 15.4",
-            "ios_saf 15.2-15.3",
-            "ios_saf 15.0-15.1",
-            "ios_saf 14.5-14.8",
-            "ios_saf 14.0-14.4",
-            "ios_saf 13.4-13.7",
-            "ios_saf 13.3",
-            "ios_saf 13.2",
-            "ios_saf 13.0-13.1",
-            "opera 89",
-            "opera 88",
-            "opera 87",
-            "opera 86",
-            "opera 85",
-            "opera 84",
-            "opera 83",
-            "opera 82",
-            "opera 81",
-            "opera 80",
-            "safari 15.6",
-            "safari 15.5",
-            "safari 15.4",
-            "safari 15.2-15.3",
-            "safari 15.1",
-            "safari 15",
-            "safari 14.1",
-            "safari 14",
-            "safari 13.1",
-            "safari 13",
-          ],
-          { isStrict: true }
-        )
-      ).toBe(false);
+      expect(obsolete(["chrome 95", "edge 100"], { isStrict: true })).toBe(false);
     });
   });
   describe("browserlist template", () => {
