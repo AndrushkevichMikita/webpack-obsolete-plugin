@@ -1,5 +1,5 @@
 {
-  "name": "obsolete-plugin",
+  "name": "webpack-obsolete-plugin",
   "version": "1.0.0",
   "description": "A Webpack plugin generates a browser-side standalone script that detects browser compatibility based on `Browserslist` and prompts website users to upgrade it.",
   "main": "index.js",
@@ -9,7 +9,8 @@
     "plugin",
     "obsolete",
     "obsolete-web",
-    "obsolete-webpack-plugin"
+    "obsolete-webpack-plugin",
+    "webpack-obsolete-plugin"
   ],
   "repository": {
     "type": "git",
