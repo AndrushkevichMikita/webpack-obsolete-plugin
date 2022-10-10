@@ -77,10 +77,7 @@ class WebpackObsoletePlugin {
   }
 
   composeCode(context) {
-    const options = {
-      template: context.template,
-    };
-    const slimOptions = this.filterObject(options, (value) => !["", null, undefined].includes(value));
+    const slimOptions = this.filterObject(context, (value) => !["", null, undefined].includes(value));
     const fileContent = readFileSync(path.resolve(__dirname, "obsolete.js"), {
       encoding: "utf-8",
     });
