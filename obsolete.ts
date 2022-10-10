@@ -24,7 +24,7 @@ const browserMap = [
   },
   {
     name: "edge",
-    includes: [/Edg\/((\d+)[.\w]*)/i, /Edge\/((\d+)[.\w]*)/i],
+    includes: [/Edg\/((\d+)[.\w]*)/i, /Edge\/((\d+)[.\w]*)/i, /EdgA\/((\d+)[.\w]*)/i],
   },
   {
     name: "chrome",

@@ -43,9 +43,18 @@ describe("method-test", () => {
       expect(obsolete(["edge 104"])).toBe(true);
       expect(obsolete(["edge 107"])).toBe(false);
     });
-    it("should pass Edge mobile, new versions", () => {
+    it("should pass Edge simulate mobile, new versions", () => {
       setUserAgent(
         "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36 Edg/106.0.0.0"
+      );
+      expect(obsolete(["edge 15"])).toBe(true);
+      expect(obsolete(["edge 104"])).toBe(true);
+      expect(obsolete(["edge 107"])).toBe(false);
+      expect(obsolete(["edge 106"])).toBe(true);
+    });
+    it("should pass Edge mobile, new versions", () => {
+      setUserAgent(
+        "Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.79 Mobile Safari/537.36 EdgA/106.0.1185.50"
       );
       expect(obsolete(["edge 15"])).toBe(true);
       expect(obsolete(["edge 104"])).toBe(true);
