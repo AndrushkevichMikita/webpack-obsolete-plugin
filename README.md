@@ -61,10 +61,10 @@ Apply script to you'r main html file, pass to obsolete function browsers thet yo
 
 ### Options
 
-| Name | Type | Description
-| ------------- |:-------------:|:-------------:|
-| template      | string    | You can paste any custom html you want, it will replace default. In addition you can place `{{browsers}}` in your html, it will be replaced with browsers from your [Browserslist](https://github.com/browserslist/browserslist). Links without the "href" attribute will be fire new tab and display supported browsers from your [Browserslist](https://github.com/browserslist/browserslist).|
-| isStrict      | boolean    |This option ensures that if the browser being used does not exist in [Browserslist](https://github.com/browserslist/browserslist) then alert will be shown.<br />Example: You'r [Browserslist](https://github.com/browserslist/browserslist) contains chrome 95, edge 100 as supported browsers, used browser is Edge 95 <br />If option isStrict: true => alert will be shown.<br />If option isStrict: false => As Edge browser supports Chrome features(wich ensure by userAgent), alert don't be shown|
+| Name | Type | Default | Description
+| ------------- |:-------------:|:-------------:|:-------------:|
+| template    |  string  |  Animated html   | You can paste any custom html you want, it will replace default. In addition you can place `{{browsers}}` in your html, it will be replaced with browsers from your [Browserslist](https://github.com/browserslist/browserslist). Links without the "href" attribute will be fire new tab and display supported browsers from your [Browserslist](https://github.com/browserslist/browserslist).|
+| isStrict      | boolean  | false  |This option ensures that if the browser being used does not exist in [Browserslist](https://github.com/browserslist/browserslist) then alert will be shown.<br />Example: You'r [Browserslist](https://github.com/browserslist/browserslist) contains chrome 95, edge 100 as supported browsers, used browser is Edge 95 <br />If option `isStrict: true` => alert will be shown.<br />If option `isStrict: false` => As Edge browser supports Chrome features(wich ensure by userAgent), alert don't be shown|
 
 ## Browser Support
 
