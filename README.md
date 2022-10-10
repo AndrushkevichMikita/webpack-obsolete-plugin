@@ -48,13 +48,23 @@ module.exports = {
 };
 ```
 
+### Usage without webpack
+
+Apply script to you'r main html file, pass to obsolete function browsers thet you support.
+
+```js
+<script src="./node_modules/webpack-obsolete-plugin/obsolete.js"></script> // or you'r own path to obsolete.js
+<script>obsolete(['edge 103']);</script>
+```
+
 ## Configuration
 
 ### Options
 
-| Name | Type | Description
-| :-: | :-: | :-:
-| template | string | You can paste any custom html you want, it will replace default.In addition you can place `{{browsers}}` in your html, it will be replaced with browsers from your [Browserslist](https://github.com/browserslist/browserslist). Links without the "href" attribute will be fire new tab and display supported browsers from your [Browserslist](https://github.com/browserslist/browserslist).
+| Name | Type | Default | Description
+| ------------- |:-------------:|:-------------:|:-------------:|
+| template    |  string  |  Animated html   | You can paste any custom html you want, it will replace default. In addition you can place `{{browsers}}` in your html, it will be replaced with browsers from your [Browserslist](https://github.com/browserslist/browserslist). Links without the "href" attribute will be fire new tab and display supported browsers from your [Browserslist](https://github.com/browserslist/browserslist).|
+| isStrict      | boolean  | false  |This option ensures that if the browser being used does not exist in [Browserslist](https://github.com/browserslist/browserslist) then alert will be shown.<br />Example: You'r [Browserslist](https://github.com/browserslist/browserslist) contains chrome 95, edge 100 as supported browsers, used browser is Edge 95 <br />If option `isStrict: true` => alert will be shown.<br />If option `isStrict: false` => As Edge browser supports Chrome features(wich ensure by userAgent), alert don't be shown|
 
 ## Browser Support
 
@@ -77,7 +87,3 @@ ChromeAndroid | Android<br>(5+, WebView) | iOS<br>(OS)
 Q: Does this plugin support Yandex, Maxthon, UC or QQ browser?
 
 A: Yep. This plugin supports those browsers based on the mainstream browser kernel, such as Chromium based browser, Mozilla based browser. In other words, `Chrome >= 30` will be also applied to Yandex browser, `ChromeAndroid >= 30` will be also applied to Android UC browser.
-
-Q: Does plugin work in IE 6?
-
-A: Yep. This plugin supports browsers that implement the full [ES3 spec](https://www-archive.mozilla.org/js/language/E262-3.pdf). Although the source code is ES2015+, it will be compiled and shimmed to the target environment eventually.
