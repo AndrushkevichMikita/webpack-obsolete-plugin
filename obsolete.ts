@@ -188,6 +188,7 @@ padding: 4px;
 white-space: pre;
 top: 0; left: 0;
 text-align: center;
+z-index: 9999;
 }
 [data-obsolete-init] a {
   text-decoration: underline;
