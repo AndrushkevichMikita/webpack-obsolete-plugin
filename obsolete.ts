@@ -39,7 +39,7 @@ const browserMap = [
   {
     name: "firefox",
     includes: [/Firefox\/((\d+\.\d+)[.\w]*)/i],
-    excludes,
+    excludes
   },
   {
     name: "opera",
@@ -57,6 +57,11 @@ const browserMap = [
   {
     name: "and_chr", // Chrome for mobile
     includes: [/Chrome\/((\d+)[.\w]*).+Mobile/i],
+    excludes: [/wv/i],
+  }, 
+  {
+    name: "and_ff", // Firefox for mobile
+    includes: [/Mobile;.+Firefox\/((\d+\.\d+)[.\w]*)/i],
     excludes: [/wv/i],
   },
 ];
