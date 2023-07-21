@@ -9,3 +9,7 @@
 ## [1.0.4](https://github.com/AndrushkevichMikita/webpack-obsolete-plugin/compare/v1.0.2...v1.0.4) (June 27, 2023)
 
 - Adjust popup z-index
+- 
+- ## [1.0.5](https://github.com/AndrushkevichMikita/webpack-obsolete-plugin/compare/v1.0.4...v1.0.5) (July 21, 2023)
+
+- Added support for Firefox mobile
